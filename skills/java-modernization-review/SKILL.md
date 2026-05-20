@@ -592,6 +592,51 @@ For each file, report:
 
 7. **Testing Strategy**
 
+8. **Modernization Score**
+
+---
+
+## Modernization Score (1–100)
+
+After every review, compute two scores — **Before** and **After** — then report the delta.
+
+### Scoring Rubric
+
+| Dimension | Points | Criteria |
+|---|---|---|
+| **Safety: NPE prevention** | 15 | 15 = all chains guarded with Optional; 0 = unguarded chained access |
+| **Safety: Monetary precision** | 15 | 15 = all money in `BigDecimal`; 0 = `double`/`float` for monetary values |
+| **Safety: Thread safety** | 15 | 15 = lock-free (`ConcurrentHashMap`, `AtomicXXX`); 8 = `synchronized` used correctly; 0 = race conditions |
+| **Code quality: Streams** | 10 | 10 = all loops converted to streams/collectors; 0 = all imperative loops |
+| **Code quality: Exception handling** | 10 | 10 = domain exceptions, logging, DLQ; 5 = caught and logged; 0 = empty catch or swallowed |
+| **Modern data carriers** | 10 | 10 = Records with compact constructor validation; 5 = immutable class; 0 = mutable DTO |
+| **Concurrency model** | 10 | 10 = virtual threads; 7 = reactive/async; 3 = fixed thread pool; 0 = unmanaged threads |
+| **Modern Java features** | 10 | `var`, method references, pattern matching, text blocks, sealed classes — 2pts each |
+| **Financial domain rules** | 5 | `ZonedDateTime` over `Date`, `BigDecimal` with `MathContext`, idempotent handlers |
+
+**Total: 100 points**
+
+### How to Report
+
+```
+### Modernization Score
+
+| Dimension                  | Before | After |
+|----------------------------|--------|-------|
+| NPE prevention             |  0/15  | 15/15 |
+| Monetary precision         |  0/15  | 12/15 |
+| Thread safety              |  0/15  | 15/15 |
+| Streams / collections      |  0/10  | 10/10 |
+| Exception handling         |  0/10  |  6/10 |
+| Modern data carriers       |  0/10  | 10/10 |
+| Concurrency model          |  3/10  | 10/10 |
+| Modern Java features       |  2/10  |  7/10 |
+| Financial domain rules     |  0/5   |  4/5  |
+| **TOTAL**                  | **5/100** | **89/100** |
+
+**Improvement: +84 points**
+```
+
 ---
 
 ## Financial Domain Rules
