@@ -1,5 +1,6 @@
 package com.fintech.trading;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -14,7 +15,7 @@ public class TradeProcessor {
     private ExecutorService executor = Executors.newFixedThreadPool(10);
 
     // NPE risk: unguarded chained access
-    public double getCounterpartyBalance(Order order) {
+    public BigDecimal getCounterpartyBalance(Order order) {
         return order.getCounterparty().getAccount().getBalance();
     }
 
@@ -22,7 +23,7 @@ public class TradeProcessor {
     public List<Trade> getPendingHighValueTrades(List<Trade> trades) {
         List<Trade> results = new ArrayList<>();
         for (Trade t : trades) {
-            if (t.getAmount() > 1000 && t.getStatus().equals("PENDING")) {
+            if (t.getAmount().doubleValue() > 1000 && t.getStatus().equals("PENDING")) {
                 results.add(t);
             }
         }
@@ -34,7 +35,7 @@ public class TradeProcessor {
         double total = 0.0;
         for (Trade t : trades) {
             if (t.getCurrency().equals("USD")) {
-                total += t.getAmount() * t.getFxRate();
+                total += t.getAmount().doubleValue() * t.getFxRate().doubleValue();
             }
         }
         return total;

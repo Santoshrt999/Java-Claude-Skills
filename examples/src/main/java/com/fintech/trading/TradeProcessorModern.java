@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  * Source:       TradeProcessor.java (Java 8)
  * Analysis:     analysis.md
  * Target:       Java 21 LTS
- * Score:        3/100 → 89/100 (+86 points)
+ * Score:        3/100 → 95/100 (+92 points)
  *
  * Changes applied (10/10):
  *  [C1] getCounterpartyBalance  — unguarded NPE chain → Optional + BigDecimal
@@ -29,8 +29,8 @@ import java.util.stream.Collectors;
  *  [SI1] executor               — fixed thread pool → virtual thread executor (Java 21)
  *  [SI3] positionMap, executor  — fields marked final
  *
- * Note: Trade and Account domain classes still return double. The BigDecimal.valueOf()
- * wrappers are a bridge — updating those classes directly would push score to 95/100.
+ * Trade.getAmount(), Trade.getFxRate(), Account.getBalance() now return BigDecimal
+ * directly — BigDecimal.valueOf() wrappers removed.
  */
 public class TradeProcessorModern {
 
@@ -42,13 +42,12 @@ public class TradeProcessorModern {
             .map(Order::getCounterparty)
             .map(Counterparty::getAccount)
             .map(Account::getBalance)
-            .map(BigDecimal::valueOf)
             .orElseThrow(() -> new IllegalArgumentException("Account balance unavailable"));
     }
 
     public List<Trade> getPendingHighValueTrades(List<Trade> trades) {
         return trades.stream()
-            .filter(t -> t.getAmount() > 1000)
+            .filter(t -> t.getAmount().compareTo(BigDecimal.valueOf(1000)) > 0)
             .filter(t -> "PENDING".equals(t.getStatus()))
             .collect(Collectors.toList());
     }
@@ -56,8 +55,7 @@ public class TradeProcessorModern {
     public BigDecimal calculateNetExposure(List<Trade> trades) {
         return trades.stream()
             .filter(t -> "USD".equals(t.getCurrency()))
-            .map(t -> BigDecimal.valueOf(t.getAmount())
-                          .multiply(BigDecimal.valueOf(t.getFxRate())))
+            .map(t -> t.getAmount().multiply(t.getFxRate()))
             .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 

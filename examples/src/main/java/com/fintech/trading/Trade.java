@@ -1,16 +1,18 @@
 package com.fintech.trading;
 
+import java.math.BigDecimal;
+
 public class Trade {
     private String id;
-    private double amount;
-    private double fxRate;
+    private BigDecimal amount;
+    private BigDecimal fxRate;
     private String currency;
     private String status;
     private String counterparty;
 
-    public double getAmount()       { return amount; }
-    public double getFxRate()       { return fxRate; }
-    public String getCurrency()     { return currency; }
-    public String getStatus()       { return status; }
-    public String getCounterparty() { return counterparty; }
+    public BigDecimal getAmount()     { return amount; }
+    public BigDecimal getFxRate()     { return fxRate; }
+    public String getCurrency()       { return currency; }
+    public String getStatus()         { return status; }
+    public String getCounterparty()   { return counterparty; }
 }

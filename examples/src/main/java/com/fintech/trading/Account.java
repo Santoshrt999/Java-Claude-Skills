@@ -1,7 +1,9 @@
 package com.fintech.trading;
 
-public class Account {
-    private double balance;
+import java.math.BigDecimal;
 
-    public double getBalance() { return balance; }
+public class Account {
+    private BigDecimal balance;
+
+    public BigDecimal getBalance() { return balance; }
 }

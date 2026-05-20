@@ -246,18 +246,17 @@ public void updatePosition(String counterparty, BigDecimal delta) {
 | Dimension | Before | After |
 |---|---|---|
 | NPE prevention | 0/15 | 15/15 |
-| Monetary precision | 0/15 | 11/15 |
+| Monetary precision | 0/15 | 15/15 |
 | Thread safety | 0/15 | 15/15 |
 | Streams / collections | 0/10 | 10/10 |
 | Exception handling | 0/10 | 6/10 |
 | Modern data carriers | 0/10 | 10/10 |
 | Concurrency model | 2/10 | 10/10 |
 | Modern Java features | 1/10 | 8/10 |
-| Financial domain rules | 0/5 | 4/5 |
-| **TOTAL** | **3/100** | **89/100** |
+| Financial domain rules | 0/5 | 5/5 |
+| **TOTAL** | **3/100** | **95/100** |
 
-**Improvement: +86 points**
+**Improvement: +92 points**
 
-> To reach 95+/100: update `Trade.getAmount()`, `Trade.getFxRate()`, and
-> `Account.getBalance()` to return `BigDecimal` directly, removing the
-> `BigDecimal.valueOf()` wrappers in `TradeProcessorModern.java`.
+> `Trade.getAmount()`, `Trade.getFxRate()`, and `Account.getBalance()` now return
+> `BigDecimal` directly. `BigDecimal.valueOf()` wrappers removed from `TradeProcessorModern.java`.
