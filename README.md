@@ -8,16 +8,66 @@ Collection of Claude Code skills for Java development, focused on modernization 
 
 ### `java-modernization-review`
 
-Reviews legacy Java code (Java 8–11) and produces structured recommendations for modernizing to Java 17–21. Specialized for financial systems: trading platforms, settlement/clearing, risk engines, and message-driven microservices.
+A Senior Java Architect skill that reviews legacy Java code (Java 8+) and produces a complete, prioritized modernization report targeting Java 21 LTS. Covers every Java feature release from Java 9 through 21, with deep specialization in financial systems: trading platforms, settlement/clearing, risk engines, and message-driven microservices.
 
-**Covers:**
-- `for` loops → Stream API
-- NPE prevention via `Optional` and `@NonNull`/`@Nullable`
-- `double`/`float` → `BigDecimal` for all monetary values
-- `@Queue`/`@Solace` threading → Kafka, virtual threads (Java 21)
-- DTOs → Java Records; type hierarchies → Sealed classes
-- `synchronized` blocks → `ConcurrentHashMap`, `AtomicReference`
-- Saga pattern for distributed transaction failures
+#### What it does
+
+**Analyzes 7 upgrade priority tracks:**
+
+| Priority | Track |
+|---|---|
+| 1 | Streams, Optional, method references (Java 8+) |
+| 2 | `var`, helpful NPE messages, built-in HTTP client (Java 9–11) |
+| 3 | Records, sealed classes, pattern matching, text blocks (Java 12–16) |
+| 4 | Virtual threads, structured concurrency, lock-free atomics (Java 17–21) |
+| 5 | String templates, unnamed classes, type inference (Java 18–21) |
+| 6 | Legacy deprecation — `Date`→`java.time`, `StringBuffer`→`StringBuilder`, reactive→virtual threads |
+| 7 | Module system (`module-info.java`) |
+
+**For every reviewed file it produces:**
+- Critical issues (NPE chains, thread safety violations, `double` money arithmetic) flagged first
+- Quick wins checklist (loops, nulls, `instanceof`, DTOs) with occurrence counts
+- Structural improvements (sealed classes, virtual thread conversion points, concurrent collections)
+- Before/After code examples for the top 3 highest-impact changes
+- A 4-phase modernization roadmap
+- A testing strategy for refactored code
+
+#### Modernization Score (1–100)
+
+Every review ends with a **Before / After score** and an **improvement delta**, computed across 9 dimensions:
+
+| Dimension | Max |
+|---|---|
+| NPE prevention | 15 |
+| Monetary precision (`BigDecimal`) | 15 |
+| Thread safety | 15 |
+| Streams & collections | 10 |
+| Exception handling | 10 |
+| Modern data carriers (Records) | 10 |
+| Concurrency model (virtual threads) | 10 |
+| Modern Java features | 10 |
+| Financial domain rules | 5 |
+| **Total** | **100** |
+
+Example output:
+
+```
+| Dimension              | Before | After  |
+|------------------------|--------|--------|
+| NPE prevention         |  0/15  | 15/15  |
+| Monetary precision     |  0/15  | 11/15  |
+| Thread safety          |  0/15  | 15/15  |
+| ...                    |  ...   |  ...   |
+| TOTAL                  |  3/100 | 89/100 |
+Improvement: +86 points
+```
+
+#### Financial Domain Rules (always enforced)
+- `BigDecimal` for all monetary values — never `double` or `float`
+- `ZonedDateTime` for timestamps — never `Date`
+- Atomic position updates, serializable ledger writes
+- Immutable domain objects via Records
+- Idempotent message handlers for settlement/clearing
 
 ---
 
@@ -44,33 +94,26 @@ The skill is now available in all your projects as `/java-modernization-review`.
 
 ## Usage
 
-In Claude Code, invoke the skill on any Java file:
+Invoke the skill on any Java file:
 
 ```
 /java-modernization-review
 
-Review examples/legacy/TradeProcessor.java
-```
-
-Or point it at a real codebase file:
-
-```
-/java-modernization-review
-
-Review src/main/java/com/fintech/TradeProcessor.java
+Review src/main/java/com/yourcompany/TradeProcessor.java
 ```
 
 ---
 
-## Example Output
+## Example
 
-See [`examples/src/main/java/com/fintech/trading/TradeProcessor.java`](examples/src/main/java/com/fintech/trading/TradeProcessor.java) for a sample legacy file containing the patterns this skill detects:
-- Unguarded chained access (NPE risk)
-- `double` arithmetic on monetary values
-- Manual `for`-loop grouping
-- `synchronized` position updates
-- Empty `catch (Exception e)` blocks
-- Rigid multi-field DTO (Record candidate)
+This repo includes a side-by-side example:
+
+| File | Description |
+|---|---|
+| [`TradeProcessor.java`](examples/src/main/java/com/fintech/trading/TradeProcessor.java) | Legacy Java 8 — NPE chains, `double` money, `synchronized` HashMap, empty catch, rigid DTO |
+| [`TradeProcessorModern.java`](examples/src/main/java/com/fintech/trading/TradeProcessorModern.java) | Java 21 — Optional, streams, `ConcurrentHashMap.merge()`, virtual threads, Record, BigDecimal |
+
+Score improvement on this example: **3/100 → 89/100 (+86 points)**
 
 ---
 
