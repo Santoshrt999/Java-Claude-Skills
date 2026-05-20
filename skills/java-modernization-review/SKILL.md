@@ -566,7 +566,22 @@ module com.fintech.trading {
 
 ---
 
+## Workflow
+
+This skill operates in two steps:
+
+1. **Review** (`/java-modernization-review`) — Analyze the file, produce the full report, save it to `analysis.md` next to the source file, then **stop**. Tell the user:
+   > "Review `analysis.md`. When ready to apply all changes, run `/java-modernization-implement`."
+
+2. **Implement** (`/java-modernization-implement`) — Read `analysis.md`, apply every recommended change, write a new `*Modern.java` file alongside the original.
+
+**Never apply code changes during the review step.** The original file must remain untouched until the user explicitly runs the implement skill.
+
+---
+
 ## Code Review Template
+
+Produce the full report, then save it verbatim to `analysis.md` in the same directory as the reviewed file.
 
 For each file, report:
 

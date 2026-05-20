@@ -71,6 +71,25 @@ Improvement: +86 points
 
 ---
 
+## Two-Step Workflow
+
+The skills operate in two distinct steps so you can review recommendations before any code is touched.
+
+```
+Step 1 — Review                          Step 2 — Implement
+───────────────────                      ──────────────────────────────
+/java-modernization-review    ────────►  /java-modernization-implement
+                                
+Analyzes the file.                       Reads analysis.md.
+Generates analysis.md.                   Applies every change.
+Stops. Waits for approval.               Writes *Modern.java alongside original.
+                                         Reports final score + delta.
+```
+
+The original file is **never modified** — the modernized version is always written as a new `*Modern.java` file.
+
+---
+
 ## Install (Claude Code)
 
 **Step 1 — Add this repo as a marketplace:**
@@ -78,9 +97,10 @@ Improvement: +86 points
 /plugin marketplace add Santoshrt999/Java-Claude-Skills
 ```
 
-**Step 2 — Install the skill:**
+**Step 2 — Install both skills:**
 ```
 /plugin install java-claude-skills@java-modernization-review
+/plugin install java-claude-skills@java-modernization-implement
 ```
 
 **Step 3 — Reload plugins:**
@@ -88,19 +108,25 @@ Improvement: +86 points
 /reload-plugins
 ```
 
-The skill is now available in all your projects as `/java-modernization-review`.
-
 ---
 
 ## Usage
 
-Invoke the skill on any Java file:
-
+**Step 1 — Run the review:**
 ```
 /java-modernization-review
 
 Review src/main/java/com/yourcompany/TradeProcessor.java
 ```
+
+This generates `analysis.md` next to the source file and stops. Open `analysis.md`, read the findings and score, then decide whether to proceed.
+
+**Step 2 — Apply the changes:**
+```
+/java-modernization-implement
+```
+
+Reads `analysis.md`, applies all recommended changes, writes `TradeProcessorModern.java`, and prints the final modernization score with improvement delta.
 
 ---
 
