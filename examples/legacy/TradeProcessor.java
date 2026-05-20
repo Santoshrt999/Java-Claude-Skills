@@ -98,35 +98,4 @@ public class TradeProcessor {
         }
     }
 
-    // --- Stub domain classes ---
-
-    static class Trade {
-        private String id;
-        private double amount;
-        private double fxRate;
-        private String currency;
-        private String status;
-        private String counterparty;
-
-        public double getAmount()      { return amount; }
-        public double getFxRate()      { return fxRate; }
-        public String getCurrency()    { return currency; }
-        public String getStatus()      { return status; }
-        public String getCounterparty(){ return counterparty; }
-    }
-
-    static class Order {
-        private Counterparty counterparty;
-        public Counterparty getCounterparty() { return counterparty; }
-    }
-
-    static class Counterparty {
-        private Account account;
-        public Account getAccount() { return account; }
-    }
-
-    static class Account {
-        private double balance;
-        public double getBalance() { return balance; }
-    }
 }
