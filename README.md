@@ -64,7 +64,7 @@ Review src/main/java/com/fintech/TradeProcessor.java
 
 ## Example Output
 
-See [`examples/legacy/TradeProcessor.java`](examples/legacy/TradeProcessor.java) for a sample legacy file containing the patterns this skill detects:
+See [`examples/src/main/java/com/fintech/trading/TradeProcessor.java`](examples/src/main/java/com/fintech/trading/TradeProcessor.java) for a sample legacy file containing the patterns this skill detects:
 - Unguarded chained access (NPE risk)
 - `double` arithmetic on monetary values
 - Manual `for`-loop grouping
