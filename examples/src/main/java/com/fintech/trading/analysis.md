@@ -218,17 +218,46 @@ public void updatePosition(String counterparty, BigDecimal delta) {
 
 ---
 
-## 8. Changes to Apply (implement checklist)
+## 8. Changes Applied (implement checklist)
 
-The `/java-modernization-implement` skill will apply these in order:
+**Status: COMPLETE** — implemented in `TradeProcessorModern.java`
 
-- [ ] C1 — `getCounterpartyBalance`: unguarded chain → `Optional` + `BigDecimal`
-- [ ] C2 — `calculateNetExposure`: `double` sum → `BigDecimal` stream reduction
-- [ ] C3 — `positionMap`: `HashMap` + `synchronized` → `ConcurrentHashMap.merge()`
-- [ ] C4 — `settleTrade`: remove empty catch, let exception propagate
-- [ ] QW1 — `getPendingHighValueTrades`: `for`-loop → stream
-- [ ] QW2 — `calculateNetExposure`: `for`-loop → stream
-- [ ] QW3 — `groupByCounterparty`: manual loop → `Collectors.groupingBy`
-- [ ] QW4 — `TradePosition`: mutable inner class → top-level `record` with `BigDecimal`
-- [ ] SI1 — `executor`: fixed thread pool → virtual thread executor
-- [ ] SI3 — `positionMap`, `executor`: add `final`
+- [x] C1 — `getCounterpartyBalance`: unguarded chain → `Optional` + `BigDecimal`
+- [x] C2 — `calculateNetExposure`: `double` sum → `BigDecimal` stream reduction
+- [x] C3 — `positionMap`: `HashMap` + `synchronized` → `ConcurrentHashMap.merge()`
+- [x] C4 — `settleTrade`: remove empty catch, let exception propagate
+- [x] QW1 — `getPendingHighValueTrades`: `for`-loop → stream
+- [x] QW2 — `calculateNetExposure`: `for`-loop → stream
+- [x] QW3 — `groupByCounterparty`: manual loop → `Collectors.groupingBy`
+- [x] QW4 — `TradePosition`: mutable inner class → top-level `record` with `BigDecimal`
+- [x] SI1 — `executor`: fixed thread pool → virtual thread executor
+- [x] SI3 — `positionMap`, `executor`: add `final`
+
+---
+
+## 9. Implementation Summary
+
+- **Source**: `TradeProcessor.java` (kept untouched for testing)
+- **Output**: `TradeProcessorModern.java`
+- **Changes applied**: 10 / 10
+
+### Final Modernization Score
+
+| Dimension | Before | After |
+|---|---|---|
+| NPE prevention | 0/15 | 15/15 |
+| Monetary precision | 0/15 | 11/15 |
+| Thread safety | 0/15 | 15/15 |
+| Streams / collections | 0/10 | 10/10 |
+| Exception handling | 0/10 | 6/10 |
+| Modern data carriers | 0/10 | 10/10 |
+| Concurrency model | 2/10 | 10/10 |
+| Modern Java features | 1/10 | 8/10 |
+| Financial domain rules | 0/5 | 4/5 |
+| **TOTAL** | **3/100** | **89/100** |
+
+**Improvement: +86 points**
+
+> To reach 95+/100: update `Trade.getAmount()`, `Trade.getFxRate()`, and
+> `Account.getBalance()` to return `BigDecimal` directly, removing the
+> `BigDecimal.valueOf()` wrappers in `TradeProcessorModern.java`.
