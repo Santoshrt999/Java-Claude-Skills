@@ -1,0 +1,11 @@
+{
+  "name": "java-modernization",
+  "version": "1.0.0",
+  "description": "Review legacy Java 8+ code and modernize it to Java 21, with financial-domain safety rules and a 1-100 modernization score.",
+  "author": {
+    "name": "Santosh Goteti"
+  },
+  "repository": "https://github.com/Santoshrt999/Java-Claude-Skills",
+  "license": "MIT",
+  "keywords": ["java", "java21", "modernization", "fintech", "code-review"]
+}

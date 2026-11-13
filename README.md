@@ -102,7 +102,8 @@ Improvement: +92 points
 ```
 Step 1 — Review                          Step 2 — Implement
 ───────────────────                      ──────────────────────────────
-/java-modernization-review    ────────►  /java-modernization-implement
+/java-modernization:                     /java-modernization:
+  java-modernization-review   ────────►    java-modernization-implement
 
 Analyzes the file.                       Reads analysis.md.
 Generates analysis.md.                   Applies every change.
@@ -121,10 +122,9 @@ The original file is **never modified**.
 /plugin marketplace add Santoshrt999/Java-Claude-Skills
 ```
 
-**Step 2 — Install both skills:**
+**Step 2 — Install the plugin (includes both skills):**
 ```
-/plugin install java-claude-skills@java-modernization-review
-/plugin install java-claude-skills@java-modernization-implement
+/plugin install java-modernization@java-claude-skills
 ```
 
 **Step 3 — Reload plugins:**
@@ -132,13 +132,37 @@ The original file is **never modified**.
 /reload-plugins
 ```
 
+### Troubleshooting
+
+**"Marketplace file not found"** — if you added this marketplace before the manifest fix, your local copy is stale. Refresh it:
+```
+/plugin marketplace update java-claude-skills
+```
+If that doesn't help, remove the marketplace and add it again with Step 1:
+```
+/plugin marketplace remove java-claude-skills
+```
+
+### Manual install (without the plugin system)
+
+Copy the two skill folders into your personal skills directory:
+```bash
+git clone https://github.com/Santoshrt999/Java-Claude-Skills.git
+mkdir -p ~/.claude/skills
+cp -r Java-Claude-Skills/skills/java-modernization-review \
+      Java-Claude-Skills/skills/java-modernization-implement ~/.claude/skills/
+```
+Installed this way, the skills are not namespaced: run them as `/java-modernization-review` and `/java-modernization-implement`.
+
 ---
 
 ## Usage
 
+Plugin skills are namespaced by the plugin name, `java-modernization`.
+
 **Run the review:**
 ```
-/java-modernization-review
+/java-modernization:java-modernization-review
 
 Review src/main/java/com/yourcompany/TradeProcessor.java
 ```
@@ -147,7 +171,7 @@ Opens `analysis.md` with the full report and score. Review it, then:
 
 **Apply the changes:**
 ```
-/java-modernization-implement
+/java-modernization:java-modernization-implement
 ```
 
 Writes `TradeProcessorModern.java` and prints the final score with improvement delta.
