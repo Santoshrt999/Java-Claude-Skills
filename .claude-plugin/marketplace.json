@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "java-claude-skills",
+  "description": "Claude Code skills for modernizing legacy Java 8+ code to Java 21.",
+  "owner": {
+    "name": "Santosh Goteti"
+  },
+  "plugins": [
+    {
+      "name": "java-modernization",
+      "source": "./",
+      "description": "Review legacy Java 8+ code and modernize it to Java 21, with financial-domain safety rules and a 1-100 modernization score.",
+      "version": "1.0.0",
+      "category": "development"
+    }
+  ]
+}
